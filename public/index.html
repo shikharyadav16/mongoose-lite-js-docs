@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mongoose-lite-js — Lightweight Mongoose-like ODM with YAML Storage</title>
+  <meta name="description"
+    content="A lightweight, Mongoose-like ODM built in TypeScript using YAML storage. Familiar MongoDB-style API for schema definition, validation, and querying — no database server required." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- ========== NAVBAR ========== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#hero" class="nav-brand">
+        <span class="brand-icon"><i class="ph ph-hard-drives"></i></span>
+        <span class="brand-text">mongoose-lite-js (v-2.0.5)</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#flow">Flow</a></li>
+        <li><a href="#getting-started">Getting Started</a></li>
+        <li><a href="#schema">Schema</a></li>
+        <li><a href="#api">API</a></li>
+        <li><a href="#structure">Structure</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="https://www.npmjs.com/package/mongoose-lite-js" class="btn btn-npm" target="_blank" rel="noopener">
+          <i class="ph ph-package"></i> npm
+        </a>
+        <a href="https://github.com/shikharyadav16/mongoose-lite-js" class="btn btn-github" target="_blank"
+          rel="noopener">
+          <i class="ph ph-github-logo"></i> GitHub
+        </a>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+          <i class="ph ph-list"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero" id="hero">
+    <div class="hero-glow hero-glow--1"></div>
+    <div class="hero-glow hero-glow--2"></div>
+    <div class="hero-glow hero-glow--3"></div>
+    <div class="hero-grid-bg"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge anim-fade-up">
+        <i class="ph ph-lightning"></i>
+        <span>Lightweight ODM — No Database Required</span>
+      </div>
+      <h1 class="hero-title anim-fade-up" style="--delay: 0.1s">
+        <span class="gradient-text">mongoose-lite-js</span>
+      </h1>
+      <p class="hero-subtitle anim-fade-up" style="--delay: 0.2s">
+        A Mongoose-like ODM built in TypeScript with YAML storage.<br />
+        Familiar API. Zero infrastructure. Instant setup.
+      </p>
+      <div class="hero-actions anim-fade-up" style="--delay: 0.3s">
+        <a href="#getting-started" class="btn btn-primary btn-lg">
+          <i class="ph ph-rocket-launch"></i> Get Started
+        </a>
+        <div class="install-command" id="installCmd">
+          <code>npm install mongoose-lite-js</code>
+          <button class="copy-btn" id="copyBtn" aria-label="Copy install command">
+            <i class="ph ph-copy"></i>
+          </button>
+        </div>
+      </div>
+      <div class="hero-stats anim-fade-up" style="--delay: 0.4s">
+        <div class="stat">
+          <i class="ph ph-file-ts"></i>
+          <span>TypeScript</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <i class="ph ph-feather"></i>
+          <span>Lightweight</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <i class="ph ph-shield-check"></i>
+          <span>Schema Validated</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <i class="ph ph-file-code"></i>
+          <span>YAML Storage</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-code anim-fade-up" style="--delay: 0.5s">
+      <div class="code-window">
+        <div class="code-header">
+          <div class="code-dots">
+            <span class="dot dot--red"></span>
+            <span class="dot dot--yellow"></span>
+            <span class="dot dot--green"></span>
+          </div>
+          <span class="code-filename"><i class="ph ph-file-js"></i> app.js</span>
+        </div>
+        <pre class="code-body"><code><span class="kw">import</span> mongooseLite <span class="kw">from</span> <span class="str">"mongoose-lite-js"</span>;
+
+mongooseLite.<span class="fn">connect</span>(<span class="str">"./data"</span>);
+
+<span class="kw">const</span> UserSchema = mongooseLite.<span class="fn">Schema</span>({
+  <span class="prop">username</span>: { <span class="prop">type</span>: <span class="type">String</span>, <span class="prop">required</span>: <span class="bool">true</span> },
+  <span class="prop">isActive</span>: { <span class="prop">type</span>: <span class="type">Boolean</span>, <span class="prop">default</span>: <span class="bool">true</span> },
+  <span class="prop">role</span>:     { <span class="prop">type</span>: <span class="type">String</span>, <span class="prop">enum</span>: [<span class="str">"tester"</span>, <span class="str">"dev"</span>] },
+});
+
+<span class="kw">const</span> User = mongooseLite.<span class="fn">model</span>(<span class="str">"User"</span>, UserSchema);
+
+<span class="kw">await</span> User.<span class="fn">create</span>({ <span class="prop">username</span>: <span class="str">"Alex"</span>, <span class="prop">role</span>: <span class="str">"tester"</span> });
+<span class="kw">const</span> users = <span class="kw">await</span> User.<span class="fn">find</span>({});
+console.<span class="fn">log</span>(users);</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FEATURES ========== -->
+  <section class="section features" id="features">
+    <div class="container">
+      <div class="section-header anim-fade-up">
+        <span class="section-label"><i class="ph ph-sparkle"></i> Features</span>
+        <h2 class="section-title">Everything you need,<br /><span class="gradient-text-alt">nothing you don't.</span>
+        </h2>
+        <p class="section-desc">Familiar Mongoose patterns without the infrastructure overhead. Build prototypes, CLI
+          tools, and lightweight apps with confidence.</p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Feature 1 -->
+        <div class="feature-card anim-fade-up" style="--accent: var(--cyan)">
+          <div class="feature-icon"><i class="ph ph-plus-circle"></i></div>
+          <h3>Document Creation</h3>
+          <p>Create documents with <code>create()</code> and <code>save()</code> — just like Mongoose.</p>
+          <div class="feature-methods">
+            <span class="method-tag">create()</span>
+            <span class="method-tag">save()</span>
+          </div>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="feature-card anim-fade-up" style="--accent: var(--purple)">
+          <div class="feature-icon"><i class="ph ph-magnifying-glass"></i></div>
+          <h3>Powerful Queries</h3>
+          <p>Find documents with flexible filtering, single lookups, and ID-based retrieval.</p>
+          <div class="feature-methods">
+            <span class="method-tag">find()</span>
+            <span class="method-tag">findOne()</span>
+            <span class="method-tag">findById()</span>
+          </div>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="feature-card anim-fade-up" style="--accent: var(--amber)">
+          <div class="feature-icon"><i class="ph ph-pencil-simple"></i></div>
+          <h3>Flexible Updates</h3>
+          <p>Update single or multiple documents with a rich set of update operations.</p>
+          <div class="feature-methods">
+            <span class="method-tag">updateOne()</span>
+            <span class="method-tag">updateMany()</span>
+            <span class="method-tag">findByIdAndUpdate()</span>
+            <span class="method-tag">findOneAndUpdate()</span>
+            <span class="method-tag">replaceOne()</span>
+          </div>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="feature-card anim-fade-up" style="--accent: var(--rose)">
+          <div class="feature-icon"><i class="ph ph-trash"></i></div>
+          <h3>Deletion</h3>
+          <p>Remove documents by filter, ID, or the first match — clean and predictable.</p>
+          <div class="feature-methods">
+            <span class="method-tag">deleteOne()</span>
+            <span class="method-tag">deleteMany()</span>
+            <span class="method-tag">findByIdAndDelete()</span>
+            <span class="method-tag">findOneAndDelete()</span>
+          </div>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="feature-card anim-fade-up" style="--accent: var(--teal)">
+          <div class="feature-icon"><i class="ph ph-wrench"></i></div>
+          <h3>Utilities</h3>
+          <p>Count documents and check existence without loading full records.</p>
+          <div class="feature-methods">
+            <span class="method-tag">countDocuments()</span>
+            <span class="method-tag">exists()</span>
+          </div>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="feature-card anim-fade-up" style="--accent: var(--lime)">
+          <div class="feature-icon"><i class="ph ph-shield-check"></i></div>
+          <h3>Schema Validation</h3>
+          <p>Define structure, required fields, enums, min/max, defaults and more — all enforced.</p>
+          <div class="feature-methods">
+            <span class="method-tag">required</span>
+            <span class="method-tag">enum</span>
+            <span class="method-tag">default</span>
+            <span class="method-tag">min/max</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FLOW DIAGRAM ========== -->
+  <section class="section flow-section" id="flow">
+    <div class="container">
+      <div class="section-header anim-fade-up">
+        <span class="section-label"><i class="ph ph-flow-arrow"></i> How It Works</span>
+        <h2 class="section-title">Data flow,<br /><span class="gradient-text-alt">visualized.</span></h2>
+        <p class="section-desc">From your application code to YAML persistence — every step is clear, validated, and
+          predictable.</p>
+      </div>
+
+      <div class="flow-diagram anim-fade-up" id="flowDiagram">
+
+        <!-- Row 1: Application Code -->
+        <div class="flow-row">
+          <div class="flow-node flow-node--app" data-flow="1">
+            <div class="flow-node-icon" style="--node-clr: var(--cyan)">
+              <i class="ph ph-code"></i>
+            </div>
+            <div class="flow-node-body">
+              <h4>Application Code</h4>
+              <p>Your JS/TS application imports and uses the library</p>
+            </div>
+            <span class="flow-tag" style="--tag-clr: var(--cyan)">Entry Point</span>
+          </div>
+        </div>
+
+        <!-- Connector -->
+        <div class="flow-connector">
+          <div class="flow-line"></div>
+          <div class="flow-pulse"></div>
+          <i class="ph ph-caret-down flow-arrow"></i>
+        </div>
+
+        <!-- Row 2: connect + Schema + model -->
+        <div class="flow-row flow-row--triple">
+          <div class="flow-node flow-node--connect" data-flow="2">
+            <div class="flow-node-icon" style="--node-clr: var(--teal)">
+              <i class="ph ph-plug"></i>
+            </div>
+            <div class="flow-node-body">
+              <h4>connect()</h4>
+              <p>Initialize storage directory</p>
+              <code class="flow-code">mongooseLite.connect("./data")</code>
+            </div>
+            <span class="flow-tag" style="--tag-clr: var(--teal)">Connection</span>
+          </div>
+
+          <div class="flow-node flow-node--schema" data-flow="2">
+            <div class="flow-node-icon" style="--node-clr: var(--amber)">
+              <i class="ph ph-blueprint"></i>
+            </div>
+            <div class="flow-node-body">
+              <h4>Schema()</h4>
+              <p>Define structure &amp; validation rules</p>
+              <code class="flow-code">type, required, enum, default</code>
+            </div>
+            <span class="flow-tag" style="--tag-clr: var(--amber)">Definition</span>
+          </div>
+
+          <div class="flow-node flow-node--model" data-flow="2">
+            <div class="flow-node-icon" style="--node-clr: var(--purple)">
+              <i class="ph ph-cube"></i>
+            </div>
+            <div class="flow-node-body">
+              <h4>model()</h4>
+              <p>Create model bound to collection</p>
+              <code class="flow-code">mongooseLite.model("User", schema)</code>
+            </div>
+            <span class="flow-tag" style="--tag-clr: var(--purple)">Binding</span>
+          </div>
+        </div>
+
+        <!-- Connector -->
+        <div class="flow-connector">
+          <div class="flow-line"></div>
+          <div class="flow-pulse"></div>
+          <i class="ph ph-caret-down flow-arrow"></i>
+        </div>
+
+        <!-- Row 3: CRUD Operations -->
+        <div class="flow-row">
+          <div class="flow-node flow-node--crud flow-node--wide" data-flow="3">
+            <div class="flow-node-icon" style="--node-clr: var(--rose)">
+              <i class="ph ph-arrows-clockwise"></i>
+            </div>
+            <div class="flow-node-body">
+              <h4>CRUD Operations</h4>
+              <p>Perform create, read, update, delete through the Model API</p>
+            </div>
+            <div class="flow-crud-tags">
+              <span class="flow-crud-tag" style="--crud-clr: var(--cyan)"><i class="ph ph-plus"></i> Create</span>
+              <span class="flow-crud-tag" style="--crud-clr: var(--purple)"><i class="ph ph-magnifying-glass"></i>
+                Read</span>
+              <span class="flow-crud-tag" style="--crud-clr: var(--amber)"><i class="ph ph-pencil-simple"></i>
+                Update</span>
+              <span class="flow-crud-tag" style="--crud-clr: var(--rose)"><i class="ph ph-trash"></i> Delete</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Connector split -->
+        <div class="flow-connector flow-connector--split">
+          <div class="flow-line"></div>
+          <div class="flow-pulse"></div>
+          <div class="flow-split-branches">
+            <div class="flow-branch flow-branch--left">
+              <div class="flow-branch-line"></div>
+              <i class="ph ph-caret-down flow-arrow"></i>
+            </div>
+            <div class="flow-branch flow-branch--right">
+              <div class="flow-branch-line"></div>
+              <i class="ph ph-caret-down flow-arrow"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 4: Validation + Helpers -->
+        <div class="flow-row flow-row--double">
+          <div class="flow-node flow-node--validation" data-flow="4">
+            <div class="flow-node-icon" style="--node-clr: var(--lime)">
+              <i class="ph ph-shield-check"></i>
+            </div>
+            <div class="flow-node-body">
+              <h4>Validation Layer</h4>
+              <p>Schema rules enforced before persistence</p>
+            </div>
+            <div class="flow-validation-items">
+              <span><i class="ph ph-check-circle"></i> Type checking</span>
+              <span><i class="ph ph-check-circle"></i> Required fields</span>
+              <span><i class="ph ph-check-circle"></i> Enum values</span>
+              <span><i class="ph ph-check-circle"></i> Min / Max</span>
+            </div>
+          </div>
+
+          <div class="flow-node flow-node--helpers" data-flow="4">
+            <div class="flow-node-icon" style="--node-clr: var(--sky)">
+              <i class="ph ph-wrench"></i>
+            </div>
+            <div class="flow-node-body">
+              <h4>Utility Layer</h4>
+              <p>Defaults applied, updates processed, filters matched</p>
+            </div>
+            <div class="flow-util-items">
+              <span class="flow-util-tag">applyDefaults</span>
+              <span class="flow-util-tag">applyUpdates</span>
+              <span class="flow-util-tag">matchFilter</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Connector -->
+        <div class="flow-connector">
+          <div class="flow-line"></div>
+          <div class="flow-pulse"></div>
+          <i class="ph ph-caret-down flow-arrow"></i>
+        </div>
+
+        <!-- Row 5: YAML Storage -->
+        <div class="flow-row">
+          <div class="flow-node flow-node--storage" data-flow="5">
+            <div class="flow-node-icon" style="--node-clr: var(--orange)">
+              <i class="ph ph-hard-drives"></i>
+            </div>
+            <div class="flow-node-body">
+              <h4>YAML File Storage</h4>
+              <p>Persisted as human-readable <code>.yaml</code> files via <code>js-yaml</code></p>
+            </div>
+            <div class="flow-files">
+              <div class="flow-file"><i class="ph ph-file-code"></i> user.yaml</div>
+              <div class="flow-file"><i class="ph ph-file-code"></i> product.yaml</div>
+              <div class="flow-file"><i class="ph ph-file-code"></i> order.yaml</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== GETTING STARTED ========== -->
+  <section class="section getting-started" id="getting-started">
+    <div class="container">
+      <div class="section-header anim-fade-up">
+        <span class="section-label"><i class="ph ph-terminal"></i> Getting Started</span>
+        <h2 class="section-title">Up and running in<br /><span class="gradient-text-green">under a minute.</span></h2>
+        <p class="section-desc">Install the package, connect to a directory, define your schema, and start querying.</p>
+      </div>
+
+      <div class="steps-timeline">
+        <!-- Step 1 -->
+        <div class="step anim-fade-left">
+          <div class="step-number">01</div>
+          <div class="step-content">
+            <h3><i class="ph ph-download-simple"></i> Install</h3>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span><i class="ph ph-terminal-window"></i> Terminal</span>
+              </div>
+              <pre><code>npm install mongoose-lite-js</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step anim-fade-right">
+          <div class="step-number">02</div>
+          <div class="step-content">
+            <h3><i class="ph ph-plug"></i> Connect</h3>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span><i class="ph ph-file-js"></i> app.js</span>
+              </div>
+              <pre><code><span class="kw">import</span> mongooseLite <span class="kw">from</span> <span class="str">"mongoose-lite-js"</span>;
+
+mongooseLite.<span class="fn">connect</span>(<span class="str">"./data"</span>);</code></pre>
+            </div>
+            <p class="step-note"><i class="ph ph-info"></i> Data is persisted as YAML files inside the connected
+              directory.</p>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step anim-fade-left">
+          <div class="step-number">03</div>
+          <div class="step-content">
+            <h3><i class="ph ph-blueprint"></i> Define Schema</h3>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span><i class="ph ph-file-js"></i> app.js</span>
+              </div>
+              <pre><code><span class="kw">const</span> UserSchema = mongooseLite.<span class="fn">Schema</span>({
+  <span class="prop">username</span>:   { <span class="prop">type</span>: <span class="type">String</span>,  <span class="prop">required</span>: <span class="bool">true</span> },
+  <span class="prop">isActive</span>:   { <span class="prop">type</span>: <span class="type">Boolean</span>, <span class="prop">default</span>: <span class="bool">true</span> },
+  <span class="prop">role</span>:       { <span class="prop">type</span>: <span class="type">String</span>,  <span class="prop">enum</span>: [<span class="str">"tester"</span>, <span class="str">"developer"</span>] },
+  <span class="prop">experience</span>: <span class="type">Number</span>
+});</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step anim-fade-right">
+          <div class="step-number">04</div>
+          <div class="step-content">
+            <h3><i class="ph ph-play-circle"></i> Use the Model</h3>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span><i class="ph ph-file-js"></i> app.js</span>
+              </div>
+              <pre><code><span class="kw">const</span> User = mongooseLite.<span class="fn">model</span>(<span class="str">"User"</span>, UserSchema);
+
+<span class="kw">await</span> User.<span class="fn">create</span>({ <span class="prop">username</span>: <span class="str">"Alex"</span>, <span class="prop">role</span>: <span class="str">"tester"</span> });
+
+<span class="kw">const</span> users = <span class="kw">await</span> User.<span class="fn">find</span>({});
+console.<span class="fn">log</span>(users);</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CommonJS note -->
+      <div class="cjs-note anim-fade-up">
+        <div class="cjs-note-icon"><i class="ph ph-swap"></i></div>
+        <div class="cjs-note-body">
+          <h4>CommonJS Support</h4>
+          <p>You can also use CommonJS import syntax:</p>
+          <code>const mongooseLite = require("mongoose-lite-js");</code>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SCHEMA ========== -->
+  <section class="section schema-section" id="schema">
+    <div class="container">
+      <div class="section-header anim-fade-up">
+        <span class="section-label"><i class="ph ph-blueprint"></i> Schema Definition</span>
+        <h2 class="section-title">Structured, validated,<br /><span class="gradient-text-warm">type-safe data.</span>
+        </h2>
+        <p class="section-desc">Define your data shape with powerful constraints — the same patterns you already know
+          from Mongoose.</p>
+      </div>
+
+      <div class="schema-grid">
+        <div class="schema-capabilities anim-fade-left">
+          <h3>Capabilities</h3>
+          <ul class="cap-list">
+            <li><span class="cap-icon" style="--cap-clr: var(--cyan)"><i class="ph ph-text-aa"></i></span>
+              <strong>Primitive types</strong> — String, Number, Boolean, Date
+            </li>
+            <li><span class="cap-icon" style="--cap-clr: var(--purple)"><i class="ph ph-brackets-curly"></i></span>
+              <strong>Complex types</strong> — Array, Object
+            </li>
+            <li><span class="cap-icon" style="--cap-clr: var(--rose)"><i class="ph ph-asterisk"></i></span>
+              <strong>Required</strong> — Enforce field presence
+            </li>
+            <li><span class="cap-icon" style="--cap-clr: var(--amber)"><i class="ph ph-arrow-arc-left"></i></span>
+              <strong>Defaults</strong> — Static or function-based
+            </li>
+            <li><span class="cap-icon" style="--cap-clr: var(--teal)"><i class="ph ph-list-checks"></i></span>
+              <strong>Enum</strong> — Restrict to allowed values
+            </li>
+            <li><span class="cap-icon" style="--cap-clr: var(--lime)"><i
+                  class="ph ph-arrows-out-line-vertical"></i></span> <strong>Min / Max</strong> — Numeric constraints
+            </li>
+            <li><span class="cap-icon" style="--cap-clr: var(--pink)"><i class="ph ph-text-indent"></i></span>
+              <strong>Min / Max Length</strong> — String constraints
+            </li>
+            <li><span class="cap-icon" style="--cap-clr: var(--sky)"><i class="ph ph-tree-structure"></i></span>
+              <strong>Nested Objects</strong> — Deep structure support
+            </li>
+            <li><span class="cap-icon" style="--cap-clr: var(--orange)"><i class="ph ph-list-dashes"></i></span>
+              <strong>Typed Arrays</strong> — Arrays of specific types
+            </li>
+          </ul>
+        </div>
+
+        <div class="schema-example anim-fade-right">
+          <h3>Example</h3>
+          <div class="code-block large">
+            <div class="code-block-header">
+              <span><i class="ph ph-file-ts"></i> ProductSchema.ts</span>
+            </div>
+            <pre><code><span class="kw">const</span> ProductSchema = mongooseLite.<span class="fn">Schema</span>({
+  <span class="prop">name</span>:  { <span class="prop">type</span>: <span class="type">String</span>,  <span class="prop">required</span>: <span class="bool">true</span> },
+  <span class="prop">price</span>: { <span class="prop">type</span>: <span class="type">Number</span>,  <span class="prop">min</span>: <span class="num">0</span> },
+  <span class="prop">tags</span>:  [<span class="type">String</span>],
+  <span class="prop">details</span>: {
+    <span class="prop">weight</span>:       <span class="type">Number</span>,
+    <span class="prop">manufacturer</span>: <span class="type">String</span>
+  }
+});</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== API REFERENCE ========== -->
+  <section class="section api-section" id="api">
+    <div class="container">
+      <div class="section-header anim-fade-up">
+        <span class="section-label"><i class="ph ph-code"></i> API Reference</span>
+        <h2 class="section-title">Complete API at<br /><span class="gradient-text">a glance.</span></h2>
+        <p class="section-desc">All the methods you'd expect from Mongoose — battle-tested patterns, zero configuration.
+        </p>
+      </div>
+
+      <div class="api-categories">
+        <!-- Create -->
+        <div class="api-category anim-fade-up" id="api-create">
+          <div class="api-cat-header" style="--cat-clr: var(--cyan)">
+            <i class="ph ph-plus-circle"></i>
+            <h3>Create</h3>
+          </div>
+          <div class="api-methods">
+            <div class="api-method">
+              <code class="api-sig">Model.create(doc)</code>
+              <p>Create and persist a new document</p>
+            </div>
+            <div class="api-method">
+              <code class="api-sig">doc.save()</code>
+              <p>Save the document instance to storage</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Read -->
+        <div class="api-category anim-fade-up" id="api-read">
+          <div class="api-cat-header" style="--cat-clr: var(--purple)">
+            <i class="ph ph-magnifying-glass"></i>
+            <h3>Query</h3>
+          </div>
+          <div class="api-methods">
+            <div class="api-method">
+              <code class="api-sig">Model.find(filter)</code>
+              <p>Find all matching documents</p>
+            </div>
+            <div class="api-method">
+              <code class="api-sig">Model.findOne(filter)</code>
+              <p>Find the first matching document</p>
+            </div>
+            <div class="api-method">
+              <code class="api-sig">Model.findById(id)</code>
+              <p>Find a document by its ID</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Update -->
+        <div class="api-category anim-fade-up" id="api-update">
+          <div class="api-cat-header" style="--cat-clr: var(--amber)">
+            <i class="ph ph-pencil-simple"></i>
+            <h3>Update</h3>
+          </div>
+          <div class="api-methods">
+            <div class="api-method">
+              <code class="api-sig">Model.updateOne(filter, update)</code>
+              <p>Update the first matching document</p>
+            </div>
+            <div class="api-method">
+              <code class="api-sig">Model.updateMany(filter, update)</code>
+              <p>Update all matching documents</p>
+            </div>
+            <div class="api-method">
+              <code class="api-sig">Model.findByIdAndUpdate(id, update)</code>
+              <p>Find by ID and apply updates</p>
+            </div>
+            <div class="api-method">
+              <code class="api-sig">Model.findOneAndUpdate(filter, update)</code>
+              <p>Find first match and update</p>
+            </div>
+            <div class="api-method">
+              <code class="api-sig">Model.replaceOne(filter, doc)</code>
+              <p>Replace the first matching document entirely</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Delete -->
+        <div class="api-category anim-fade-up" id="api-delete">
+          <div class="api-cat-header" style="--cat-clr: var(--rose)">
+            <i class="ph ph-trash"></i>
+            <h3>Delete</h3>
+          </div>
+          <div class="api-methods">
+            <div class="api-method">
+              <code class="api-sig">Model.deleteOne(filter)</code>
+              <p>Delete the first matching document</p>
+            </div>
+            <div class="api-method">
+              <code class="api-sig">Model.deleteMany(filter)</code>
+              <p>Delete all matching documents</p>
+            </div>
+            <div class="api-method">
+              <code class="api-sig">Model.findByIdAndDelete(id)</code>
+              <p>Find by ID and delete</p>
+            </div>
+            <div class="api-method">
+              <code class="api-sig">Model.findByIdAndRemove(id)</code>
+              <p>Alias for findByIdAndDelete</p>
+            </div>
+            <div class="api-method">
+              <code class="api-sig">Model.findOneAndDelete(filter)</code>
+              <p>Find first match and delete</p>
+            </div>
+            <div class="api-method">
+              <code class="api-sig">Model.findOneAndRemove(filter)</code>
+              <p>Alias for findOneAndDelete</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Utilities -->
+        <div class="api-category anim-fade-up" id="api-utils">
+          <div class="api-cat-header" style="--cat-clr: var(--teal)">
+            <i class="ph ph-wrench"></i>
+            <h3>Utilities</h3>
+          </div>
+          <div class="api-methods">
+            <div class="api-method">
+              <code class="api-sig">Model.countDocuments(filter)</code>
+              <p>Return count of matching documents</p>
+            </div>
+            <div class="api-method">
+              <code class="api-sig">Model.exists(filter)</code>
+              <p>Check if any document matches</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Core -->
+        <div class="api-category anim-fade-up" id="api-core">
+          <div class="api-cat-header" style="--cat-clr: var(--lime)">
+            <i class="ph ph-cube"></i>
+            <h3>Core</h3>
+          </div>
+          <div class="api-methods">
+            <div class="api-method">
+              <code class="api-sig">mongooseLite.Schema(definition)</code>
+              <p>Define structure, validation rules, and defaults</p>
+            </div>
+            <div class="api-method">
+              <code class="api-sig">mongooseLite.model(name, schema)</code>
+              <p>Create a model bound to a YAML collection</p>
+            </div>
+            <div class="api-method">
+              <code class="api-sig">mongooseLite.connect(path)</code>
+              <p>Initialize YAML-based storage at the given path</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== DATA STORAGE ========== -->
+  <section class="section storage-section" id="storage">
+    <div class="container">
+      <div class="storage-banner anim-fade-up">
+        <div class="storage-visual">
+          <div class="folder-tree">
+            <div class="tree-item root"><i class="ph ph-folder-open"></i> project-root/</div>
+            <div class="tree-item child"><i class="ph ph-folder-open"></i> data/</div>
+            <div class="tree-item grandchild yaml"><i class="ph ph-file-code"></i> user.yaml</div>
+            <div class="tree-item grandchild yaml"><i class="ph ph-file-code"></i> product.yaml</div>
+          </div>
+        </div>
+        <div class="storage-info">
+          <h2><i class="ph ph-hard-drives"></i> YAML-Based Storage</h2>
+          <p>Data is persisted as human-readable YAML files inside the directory you pass to <code>connect()</code>.
+            Each model maps to a single <code>.yaml</code> file — no external database needed.</p>
+          <div class="storage-dep">
+            <span class="dep-label"><i class="ph ph-package"></i> Dependency:</span>
+            <code>js-yaml</code> — for reading and writing YAML files
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PROJECT STRUCTURE ========== -->
+  <section class="section structure-section" id="structure">
+    <div class="container">
+      <div class="section-header anim-fade-up">
+        <span class="section-label"><i class="ph ph-tree-structure"></i> Project Structure</span>
+        <h2 class="section-title">Clean architecture,<br /><span class="gradient-text-rose">well organized.</span></h2>
+        <p class="section-desc">The source code is split into focused modules — easy to understand, extend, and
+          contribute to.</p>
+      </div>
+
+      <div class="structure-tree-container anim-fade-up">
+        <div class="structure-tree">
+          <div class="struct-group">
+            <div class="struct-item folder"><i class="ph ph-folder-simple"></i> src/</div>
+
+            <div class="struct-group nested">
+              <div class="struct-item folder accent-cyan"><i class="ph ph-folder-simple"></i> core/</div>
+              <div class="struct-item file">
+                <i class="ph ph-file-ts"></i> Schema.ts
+                <span class="struct-desc">Schema definition & validation rules</span>
+              </div>
+              <div class="struct-item file">
+                <i class="ph ph-file-ts"></i> Model.ts
+                <span class="struct-desc">Model class with CRUD operations</span>
+              </div>
+              <div class="struct-item file">
+                <i class="ph ph-file-ts"></i> index.ts
+                <span class="struct-desc">Core module exports</span>
+              </div>
+            </div>
+
+            <div class="struct-group nested">
+              <div class="struct-item folder accent-purple"><i class="ph ph-folder-simple"></i> types/</div>
+              <div class="struct-item file">
+                <i class="ph ph-file-ts"></i> common.types.ts
+                <span class="struct-desc">Shared type definitions</span>
+              </div>
+              <div class="struct-item file">
+                <i class="ph ph-file-ts"></i> Types.ts
+                <span class="struct-desc">Core type exports</span>
+              </div>
+            </div>
+
+            <div class="struct-group nested">
+              <div class="struct-item folder accent-amber"><i class="ph ph-folder-simple"></i> db/</div>
+              <div class="struct-item file">
+                <i class="ph ph-file-ts"></i> Connection.ts
+                <span class="struct-desc">Storage connection manager</span>
+              </div>
+              <div class="struct-item file">
+                <i class="ph ph-file-ts"></i> DBHelper.ts
+                <span class="struct-desc">Low-level DB operations</span>
+              </div>
+            </div>
+
+            <div class="struct-group nested">
+              <div class="struct-item folder accent-teal"><i class="ph ph-folder-simple"></i> utils/</div>
+              <div class="struct-item file">
+                <i class="ph ph-file-ts"></i> applyDefaults.ts
+                <span class="struct-desc">Apply default values to documents</span>
+              </div>
+              <div class="struct-item file">
+                <i class="ph ph-file-ts"></i> applyUpdates.ts
+                <span class="struct-desc">Apply update operations</span>
+              </div>
+              <div class="struct-item file">
+                <i class="ph ph-file-ts"></i> matchFilter.ts
+                <span class="struct-desc">Query filter matching logic</span>
+              </div>
+              <div class="struct-item file">
+                <i class="ph ph-file-ts"></i> yamlHelper.ts
+                <span class="struct-desc">YAML read/write utilities</span>
+              </div>
+            </div>
+
+            <div class="struct-group nested">
+              <div class="struct-item folder accent-rose"><i class="ph ph-folder-simple"></i> errors/</div>
+              <div class="struct-item file">
+                <i class="ph ph-file-ts"></i> ValidationError.ts
+                <span class="struct-desc">Custom validation error class</span>
+              </div>
+            </div>
+
+            <div class="struct-item file root-file">
+              <i class="ph ph-file-ts"></i> index.ts
+              <span class="struct-desc">Library entry point</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== LIMITATIONS ========== -->
+  <section class="section limitations-section" id="limitations">
+    <div class="container">
+      <div class="limitations-banner anim-fade-up">
+        <div class="limitations-header">
+          <i class="ph ph-warning-circle"></i>
+          <h2>Limitations</h2>
+        </div>
+        <ul class="limitations-list">
+          <li>
+            <i class="ph ph-x-circle"></i>
+            <span>Not intended for high-concurrency or large-scale production systems</span>
+          </li>
+          <li>
+            <i class="ph ph-x-circle"></i>
+            <span>File-based storage may not be suitable for large datasets</span>
+          </li>
+          <li>
+            <i class="ph ph-x-circle"></i>
+            <span>No built-in indexing or advanced query optimization</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <i class="ph ph-database"></i>
+            <span>mongoose-lite-js</span>
+          </div>
+          <p>A lightweight, Mongoose-like ODM with YAML storage. Built with TypeScript.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <a href="#features"><i class="ph ph-caret-right"></i> Features</a>
+          <a href="#getting-started"><i class="ph ph-caret-right"></i> Getting Started</a>
+          <a href="#schema"><i class="ph ph-caret-right"></i> Schema</a>
+          <a href="#api"><i class="ph ph-caret-right"></i> API Reference</a>
+        </div>
+        <div class="footer-links">
+          <h4>Resources</h4>
+          <a href="https://www.npmjs.com/package/mongoose-lite-js" target="_blank" rel="noopener"><i
+              class="ph ph-package"></i> npm Package</a>
+          <a href="https://github.com/shikharyadav16/mongoose-lite-js" target="_blank" rel="noopener"><i
+              class="ph ph-github-logo"></i> GitHub</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>MIT License &copy; 2025 <strong>Shikhar</strong></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== SCROLL-TO-TOP ========== -->
+  <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
+    <i class="ph ph-caret-up"></i>
+  </button>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
