@@ -54,6 +54,9 @@
   --radius-sm: 8px;
   --radius-xs: 5px;
 }
+* {
+  overflow-x: hidden;
+}
 
 html {
   scroll-behavior: smooth;
