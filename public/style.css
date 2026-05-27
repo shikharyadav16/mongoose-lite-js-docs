@@ -54,7 +54,9 @@
   --radius-sm: 8px;
   --radius-xs: 5px;
 }
-* {
+
+html,
+body {
   overflow-x: hidden;
 }
 
@@ -70,7 +72,6 @@ body {
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
 }
 
 a {
@@ -273,8 +274,8 @@ ol {
 }
 
 .hero-glow--1 {
-  width: 600px;
-  height: 600px;
+  width: min(60vw, 600px);
+  height: min(60vw, 600px);
   background: var(--cyan);
   top: -10%;
   left: -10%;
@@ -282,8 +283,8 @@ ol {
 }
 
 .hero-glow--2 {
-  width: 500px;
-  height: 500px;
+  width: min(50vw, 500px);
+  height: min(50vw, 500px);
   background: var(--purple);
   top: 20%;
   right: -10%;
@@ -291,8 +292,8 @@ ol {
 }
 
 .hero-glow--3 {
-  width: 400px;
-  height: 400px;
+  width: min(45vw, 400px);
+  height: min(45vw, 400px);
   background: var(--rose);
   bottom: -5%;
   left: 30%;
